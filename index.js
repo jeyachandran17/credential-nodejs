@@ -9,7 +9,7 @@ import forgetPasswordRouter from './router/forgetPassword.js';
 import { auth } from "./middleware/auth.js";
 
 const app = express();
-
+app.use(cors());
 const PORT = process.env.PORT;
 
 const MONGO_URL = process.env.MONGO_URL;
@@ -26,8 +26,8 @@ app.get("/", function (request, response) {
 
 app.get("/urls", async function () {
   const urls = await client.db("b42wd2").collection('credential').find({}).toArray();
-  // response.send(urls)
-  console.log(urls)
+  response.send(urls);
+  // console.log(urls)
 })
 
 app.put("/user/:email", async function (request, response) {
@@ -41,7 +41,7 @@ app.put("/user/:email", async function (request, response) {
 })
 
 
-app.use(cors());
+
 app.use("/user", usersRouter);
 app.use("/user", forgetPasswordRouter);
 
