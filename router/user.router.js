@@ -2,7 +2,8 @@ import express from "express";
 const router = express.Router();
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { getUserByName,createUser } from "../service/user.service.js";
+import { getUserByName,createUser, updatePassword } from "../service/user.service.js";
+
 
 async function generateHashedPassword(password) {
   const NO_OF_ROUNDS = 10;
@@ -15,7 +16,7 @@ async function generateHashedPassword(password) {
 
 // signup - message  - signup successfully | Username already exists
 
-router.post("/signup",async function (request, response) {
+router.post("/signup", async function (request, response) {
   const { username, email, password } = request.body;
 
   const userFromDB = await getUserByName(email);
@@ -65,6 +66,21 @@ router.post("/login",async function (request, response) {
       response.status(401).send({ message: "Invalid credentials" });
     }
   }
+})
+
+// router.put('/update-password', async function (request, response) {
+//   const newPassword = request.body;
+//   const result = await client.db("b42wd2").collection('user').updateOne({&set:data},{})
+// })
+
+router.put("/:id", async function (request, response) {
+  const { id } = request.params;
+  const data = request.body;
+  // console.log(data);
+  // console.log(id);
+
+  const result = await updatePassword(id, data); 
+  response.send(result);
 })
 
 export default router;
