@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
 // const express = require("express"); // "type": "commonjs"
-import express, { response } from "express"; // "type": "module"
+import express from "express"; // "type": "module"
 import { MongoClient } from "mongodb";
 import cors from "cors"
 import usersRouter from './router/user.router.js';
@@ -24,7 +24,7 @@ app.get("/", function (request, response) {
   response.send("🙋‍♂️, 🌏Users crendetials 🎊✨🤩");
 });
 
-app.get("/urls", async function () {
+app.get("/userurls", async function (request, response) {
   const urls = await client.db("b42wd2").collection('credential').find({}).toArray();
   response.send(urls);
   // console.log(urls)
